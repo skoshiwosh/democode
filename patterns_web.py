@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 '''
-    Create Web Page containing Image Patterns
+    Create web page containing images using template from src_html
     
     @version: 1.0
     @date: Feb 2018
-    @authors: Suzanne Berger
-    @contact: info@zanefx.com
+    @author: Suzanne Berger
+    @contact: zanefx7@gmail.com
 '''
 
 import sys
