@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 '''
+    Launch window to create mirrored tiled images from source image file
+    
     File name: collager.py
     Author: Suzanne Berger
     Date created: 03/15/2018

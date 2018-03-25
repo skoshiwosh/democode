@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 '''
-Version up file argument and save in versions subdirectory
+    Copy file argument with added version suffix to basename and save in versions subdirectory
 
-@version: 1.0
-@date: Sept 11, 2011
-@author: suzanne.berger
-@contact: zanefx7@gmail.com
+    @version: 1.0
+    @date: Sept 14, 2011
+    @author: suzanne.berger
+    @contact: zanefx7@gmail.com
 '''
 
 import sys
@@ -15,7 +15,7 @@ import re
 import shutil
 import argparse
 
-def upv(last,vstr='_v'):
+def upv(last, vstr='_v'):
     ''' Return next version string'''
     
     if not last:
@@ -31,8 +31,8 @@ def upv(last,vstr='_v'):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description = 'Version up input verfile and save in versions subdirectory')
-    parser.add_argument('-v', '--vstr', action='store', dest='verstr', default='_v', help='optional string to prefix version number, default is "_v"')
-    parser.add_argument('verfile', action='store', help='input file to be versioned and copied to versions subdirectory')
+    parser.add_argument('-v', '--vstr', action='store', dest='verstr', default='_v', help='optional suffix version string, default is "_v"')
+    parser.add_argument('verfile', action='store', help='input file to be copied with version string to versions subdirectory')
     args = parser.parse_args()
 
     verfile = args.verfile
