@@ -1,12 +1,12 @@
 #!/usr/bin/env python
-'''
+"""
     Create web page containing images using template from src_html
     
     @version: 1.0
     @date: Feb 2018
     @author: Suzanne Berger
     @contact: zanefx7@gmail.com
-'''
+"""
 
 import sys
 import os.path
@@ -15,6 +15,7 @@ import glob
 import logging
 from pprint import pprint
 
+# module contains template html with token strings that get replaced with generated data
 import src_html
 
 #########################################################
@@ -30,6 +31,8 @@ logging.info( " %s Version %s" % (sys.argv[0], VERSION))
 #########################################################
 
 def make_html_table(image_list, image_html_file):
+    """ Build html table and save to image_html_file. """
+    
     ihf = open(image_html_file,'w')
     html_head = src_html.HTML_HEAD
     ihf.write('\n'.join(html_head))
@@ -49,6 +52,11 @@ def make_html_table(image_list, image_html_file):
     ihf.close()
 
 def make_list(image_dir):
+    """ Build image data list from input image directory containing images for web page.
+        
+    This list is then used by above function that builds the html page.
+    
+    """
     image_list = []
     
     images = glob.glob("%s/*.jpg" % image_dir)
@@ -74,11 +82,9 @@ if __name__ == '__main__':
 
     image_list = make_list(image_dir)
     pprint(image_list)
-
     index_html_file = '%s/index.html' % image_dir
     make_html_table(image_list, index_html_file)
 
     logging.info("\n *** index.html created in Image Directory ***")
-
-sys.exit(0)
+    sys.exit(0)
 
