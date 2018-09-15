@@ -131,7 +131,7 @@ class CollagerWin(QtWidgets.QWidget):
                 this_lineEdit = this_groupBox.findChild(QtWidgets.QLineEdit, this_lineEdit_objectname)
                 this_path = os.path.normpath(os.path.join(self.image_dir, this_lineEdit.text()))
                 this_image = value[-1]
-                this_image.save(this_path)
+                this_image.save(this_path, quality=100)
                 logging.info("Saving collage %s to image file %s" % (cllkey, this_path))
             
         self.status_lineEdit.setText("Successfully saved all collages to %s" % self.image_dir)
@@ -161,7 +161,7 @@ class CollagerWin(QtWidgets.QWidget):
 
         if self.srcfile is not None:
             self.src_lineEdit.setText(self.srcfile)
-            self.image_dir,self.image_file = split_path(self.srcfile)
+            self.image_dir,self.image_file = os.path.split(self.srcfile)
             self.mkcllpix()
 
     def mkbox(self, cllkey, this_groupBox):
@@ -253,18 +253,6 @@ class CollagerWin(QtWidgets.QWidget):
                 continue
             
             painter.end()
-
-
-
-#########################################################
-# methods
-#########################################################
-
-def split_path(image_path):
-    parts = os.path.split(image_path)
-    image_dir = parts[0]
-    image_file = parts[1]
-    return image_dir, image_file
 
 
 

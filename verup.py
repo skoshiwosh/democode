@@ -2,7 +2,6 @@
 """
     Copy file argument with version suffix added to basename and save in versions subdirectory.
     
-    
     Version: 1.0
     Date: Sept 9, 2018
     Author: Suzanne Berger
