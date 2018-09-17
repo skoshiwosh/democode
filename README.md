@@ -9,7 +9,7 @@ ToDo:
 
 Files:
 
-upv.py 
+verup.py 
 - Copy file argument with added version suffix to base name and save in versions subdirectory
 
 patterns_web.py, src_html.py
