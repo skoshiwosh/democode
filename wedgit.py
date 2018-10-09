@@ -27,10 +27,11 @@ def wedge_minmax(start_value = 0.5, end_value = 1.5, factor = 0.25):
 
     wedge_values.append(end_value)
 
-    print("Wedge list derived from start {}, end {}, and step factor {}".
+    print(">>> Wedge list derived from start {}, end {}, and step factor {}".
           format(start_value, end_value, factor))
     pprint(wedge_values)
     return wedge_values
+
 
 def wedge_startstep(start_value = 0.5, step_size = 0.25, num_steps = 3):
     """ Create list of wedge values using input start value, step size and number of steps. """
@@ -41,30 +42,60 @@ def wedge_startstep(start_value = 0.5, step_size = 0.25, num_steps = 3):
         next_value += step_size
         wedge_values.append(round(next_value,3))
 
-    print("Wedge list derived from start {}, step size {}, and step number {}".
+    print(">>> Wedge list derived from start {}, step size {}, and step number {}".
           format(start_value, step_size, num_steps))
     pprint(wedge_values)
     return wedge_values
-    
-if __name__ == "__main__":
 
+
+def usage():
+    """ Print help message """
+    
+    print(">>> Usage >>> Return numeric list with values derived from input arguments.")
+    print("Enter either '-mx' or '-ss' as first argument to select wedging method.")
+    print("If no arguments given after option then defaults will be used")
+    print("For option '-mx', enter arguments for <min value> <max value> <step factor>")
+    print("For option '-ss', enter arguments for <start value> <step factor> <number of steps>")
+
+
+########################################################################################################
+# main
+########################################################################################################
+if __name__ == "__main__":
+    if len(sys.argv) == 1:
+        usage()
+        sys.exit(1)
+
+    wedge_option = sys.argv[1]
     wedge1_values = wedge2_values = []
-    if len(sys.argv) != 5:
+        
+    if wedge_option == "-mx" and len(sys.argv) == 2:
         wedge1_values = wedge_minmax()
+
+    elif wedge_option == "-ss" and len(sys.argv) == 2:
         wedge2_values = wedge_startstep()
 
-    else:
-        wedge_option = sys.argv[1]
-        if wedge_option == "-mx":
+    elif wedge_option == "-mx":
+        try:
             wdg_min = float(sys.argv[2])
             wdg_max = float(sys.argv[3])
             wdg_factor = float(sys.argv[4])
             wedge1_values = wedge_minmax(wdg_min, wdg_max, wdg_factor)
+        except:
+            print("%s *** Error *** Invalid arguments" % sys.argv[0])
+            usage()
+            sys.exit(1)
 
-        if wedge_option == "-ss":
+    elif wedge_option == "-ss":
+        try:
             wdg_min = float(sys.argv[2])
             wdg_step = float(sys.argv[3])
             wdg_num = int(sys.argv[4])
             wedge2_values = wedge_startstep(wdg_min, wdg_step, wdg_num)
+        except:
+            print("%s *** Error *** Invalid arguments" % sys.argv[0])
+            usage()
+            sys.exit(1)
 
     sys.exit()
+
