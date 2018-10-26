@@ -10,8 +10,32 @@ ToDo:
 
 Files:
 
-verup.py 
+python_docs.pdf
+- list of links to important web docs on Python, PySide2 and Maya Python commands
+
+python_class_outline.pdf
+- my own class outline proposal for teaching python and technical infrastructure to visual effects students
+- this does not necessarily correlate with python course taught at specific institutions
+
+scriptinfo.pdf
+- description of example python scripts to be used for teaching Python
+
+templatescript.py, demoscript.py, seqtypes.py
+- these are described in scriptinfo.pdf
+
+running_pythonscripts.pdf
+- demo using templatescript.py to show difference between running script directly from command line or from imported module
+
+userwork.py
+- create work subdirectory under global ROOTDIR ending with USERNAME environment variable
+
+verup.py, upv.py
 - Copy file argument with added version suffix to base name and save in versions subdirectory
+- verup.py is simpler because the version suffix is hard-coded to be “_v%02d”
+- upv.py allows user input version suffix and uses regular expression module, re, to parse
+
+findtabs.py
+- parse python scripts for hard-tabs from input top-level directory 
 
 patterns_web.py, src_html.py
 - Create web page containing images using templates from module, src_html.py
@@ -21,7 +45,6 @@ collager.py
 - Look at collager_init.png and collager_done.png 
 
 The next three scripts should be considered work in progress:
-
 wedgit.py
 - return numeric list of values based on input min/max value and scale factor or start value, step size and number of steps
 
