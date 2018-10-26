@@ -45,6 +45,7 @@ collager.py
 - Look at collager_init.png and collager_done.png 
 
 The next three scripts should be considered work in progress:
+
 wedgit.py
 - return numeric list of values based on input min/max value and scale factor or start value, step size and number of steps
 
