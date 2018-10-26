@@ -54,7 +54,6 @@ wedgitui.py
 - script is incomplete but ultimately should have buttons to create and connect wedge node
 
 mkwdg.py
-- contains following functions:
-- create locator node with extra attributes to contain wedge values created from wedgit functions
+- create Maya locator node and add extra attributes to contain wedge values created from wedgit functions
 - connect wedge locator node wedge attributes to node attribute to be wedged
 - increment wedge index
