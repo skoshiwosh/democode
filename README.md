@@ -45,7 +45,8 @@ collager.py
 - Look at collager_init.png and collager_done.png 
 
 makecity.py, makecity_description.pdf
-- makecity.py copies geo over grid and randomizes scale on each geo. Result can be interpreted as low resolution CG city environment. the pdf gives further description and suggests improvements.
+- makecity.py copies geo over grid and randomizes scale on each geo. Result can be interpreted as low resolution CG city environment.
+- makecity_description.pdf describes script with screen grabs and suggests improvements.
 
 The next three scripts should be considered work in progress:
 wedgit.py
