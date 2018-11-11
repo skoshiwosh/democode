@@ -44,8 +44,10 @@ collager.py
 - Launch window to create mirrored tiled images from source image file
 - Look at collager_init.png and collager_done.png 
 
-The next three scripts should be considered work in progress:
+makecity.py, makecity_description.pdf
+- makecity.py copies geo over grid and randomizes scale on each geo. Result can be interpreted as low resolution CG city environment. the pdf gives further description and suggests improvements.
 
+The next three scripts should be considered work in progress:
 wedgit.py
 - return numeric list of values based on input min/max value and scale factor or start value, step size and number of steps
 
