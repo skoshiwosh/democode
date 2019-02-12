@@ -26,9 +26,6 @@ templatescript.py, demoscript.py, seqtypes.py
 running_pythonscripts.pdf
 - demo using templatescript.py to show difference between running script directly from command line or from imported module
 
-userwork.py
-- create work subdirectory under global ROOTDIR ending with USERNAME environment variable
-
 verup.py, upv.py
 - Copy file argument with added version suffix to base name and save in versions subdirectory
 - verup.py is simpler because the version suffix is hard-coded to be “_v%02d”
