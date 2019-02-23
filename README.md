@@ -37,10 +37,6 @@ findtabs.py
 patterns_web.py, src_html.py
 - Create web page containing images using templates from module, src_html.py
 
-collager.py
-- Launch window to create mirrored tiled images from source image file
-- Look at collager_init.png and collager_done.png 
-
 makecity.py, makecity_description.pdf
 - makecity.py copies geo over grid and randomizes scale on each geo. Result can be interpreted as low resolution CG city environment.
 - makecity_description.pdf describes script with screen grabs and suggests improvements.
