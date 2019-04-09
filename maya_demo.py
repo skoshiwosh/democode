@@ -100,6 +100,55 @@ for vindex in range(30):
     this_point = cmds.pointPosition( 'groundShape.vtx[%d]' % vindex)
     print(vindex, this_point)
 
+
+
+
+####################################################################
+#
+# create list of poly vertex points, "vtx",
+# or nurbs control vertex points, "cv"
+#
+####################################################################
+
+
+vtx_list = cmds.xform('pCube1.vtx[*]', q=True, ws=True, t=True)
+vtx_points=zip(*[iter(vtx_list)]*3)
+print(len(vtx_points))
+pprint(vtx_points)
+
+cv_list = cmds.xform('nurbsSphere1.cv[*]', q=True, ws=True, t=True)
+cv_points = zip(*[iter(cv_list)]*3)
+print(len(cv_points))
+pprint(cv_points)
+
+####################################################################
+#
+#  makecity demo and shelf
+#
+###################################################################
+
+from pprint import pprint
+
+from maya import cmds
+
+try:
+    reload(makecity)
+except:
+    import makecity
+
+newcube = makecity.mkcube("building_grp", "cube0")
+print(newcube)
+
+
+newcity = makecity.copy2grid("building_grp")
+print(newcity)
+
+
+makecity.randgeo(newcity)
+
+
+anocity = makecity.copy2vtx("building_grp", "nurbsSphere1")
+
 """
 
 ls command
