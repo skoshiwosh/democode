@@ -14,7 +14,7 @@ def findtabinfiles(dirname,allfiles):
         for i in range(len(all_lines)):
             each = all_lines[i]
             if '\t' in each and len(each) > 3:
-                print "*** hard tab *** line",i+1,filepath
+                print("*** hard tab *** line",i+1,filepath)
                 break
 
 def findtabs(topdir,skipversions = False):
