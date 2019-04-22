@@ -67,7 +67,7 @@ def copy2grid(bldg_grp, numrows=4, numcols=4, stepx=3, stepz=3, hide=True):
             x = stepx * i
             z = stepz * j
             points.append((x,0,z))
-    pprint(points)
+    #pprint(points)
 
     # get building geo under bldg_grp and copy to each point of grid
     # ToDo: if more than 1 geo under group, then use random.choice(bldg_list) to get a random choice to be copied.
@@ -80,12 +80,12 @@ def copy2grid(bldg_grp, numrows=4, numcols=4, stepx=3, stepz=3, hide=True):
         allgeo.append(newgeo[0])
 
     # group all copies under city_grp
-    pprint(allgeo)
+    #pprint(allgeo)
     city_grp = cmds.group(allgeo, name="city_grp", w=True)
 
     # turn off original geo's visibility if hide is True
     if hide:
-        cmds.setAttr("%s.visibility" % this_bldg, 0)
+        cmds.setAttr("%s.visibility" % bldg_grp, 0)
     return city_grp
 
 
