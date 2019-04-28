@@ -1,14 +1,26 @@
 #!/usr/bin/env python
 """
-    Example template python script.
+    Example python script used for teaching.
 """
 
 import sys
+import logging
 
 
-def foobar(arg1, arg2):
-    print("foobar: arguments are {} and {}".format(arg1, arg2))
-    
+#########################################################
+# globals
+#########################################################
+
+VERSION = "V02"
+logging.basicConfig(level=logging.INFO)
+logging.info("%s Version %s" % (__file__, VERSION))
+
+#print("cmp_ints is type ", type(cmp_ints))     # will error because 'cmp_ints' not defined yet
+
+#########################################################
+# methods
+#########################################################
+
 def cmp_ints(arg1, arg2):
     if arg1 > arg2:
         print("cmp_ints: arg1: {} is bigger".format(arg1))
@@ -20,25 +32,38 @@ def cmp_ints(arg1, arg2):
         print("cmp_ints: arg1: {} and arg2: {} are equal".format(arg1, arg2))
         return [arg1]
 
-    
+print("cmp_ints is type ", type(cmp_ints))
+
+def get_powers(max_int):
+    powers = []                     # start with empty list
+    looper = max_int
+    while looper > 0:
+        this_pow = looper ** 2
+        powers.append(this_pow)     # keep adding to list
+        looper -= 1                 # until looper is 0
+    return powers
+
+print("get_powers is type ", type(get_powers))
+
+#########################################################
+# main
+#########################################################
+
 if __name__ == "__main__":
 
-    print("sys.argv is a list")
-    print(sys.argv)
+    print("sys.argv list: ", sys.argv)
     if len(sys.argv) < 3:
-        print("Error: {} is missing arguments".format(sys.argv[0]))
+        logging.error(" {} is missing arguments".format(sys.argv[0]))
         sys.exit(1)
 
     arg1 = sys.argv[1]
     arg2 = sys.argv[2]
 
-    foobar(arg1, arg2)
-
     try:
         i = int(arg1)
         j = int(arg2)
     except:
-        print("Error: arguments {} and {} are not integers".format(arg1, arg2))
+        logging.error(" Arguments {} and {} are not integers".format(arg1, arg2))
         sys.exit(1)
         
     range_list = cmp_ints(i, j)
@@ -46,15 +71,8 @@ if __name__ == "__main__":
     for each in range_list:
         print(each)
 
-    # of course one should use built-in function, max, to do this
-    max_int = max(i, j)
-    print("max_int using max built-in function", max_int)
+    powers = get_powers(max(i, j))      # use built-in max function to pass in max integer
+    print("powers ", powers)
 
-    looper = max_int
-    while looper > 0:
-        print("looper = {}".format(looper))
-        looper -= 1
-    print("all done looping looper")
-    
     # exiting and all is good       
     sys.exit()
