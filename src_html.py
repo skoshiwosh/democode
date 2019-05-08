@@ -31,10 +31,10 @@ HTML_IMAGE = [
     '<tr>',
     '<td style="background-color:lightgrey;">',
     '<h3 style="text-align:center;"> $IMGTITLE </h3>',
-    '</td>'
+    '</td>',
     '</tr>',
     '<tr>',
-    '<td >',
+    '<td>',
     '<img src=$IMGFILE width=$WIDTH height=$HEIGHT>',
     '</td>',
     '</tr>',
