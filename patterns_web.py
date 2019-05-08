@@ -15,8 +15,7 @@ import glob
 import logging
 from pprint import pprint
 
-# module contains template html with token strings that get replaced with generated data
-import src_html
+import src_html     # template html with token strings to be replaced by input file data
 
 #########################################################
 # globals
@@ -24,7 +23,7 @@ import src_html
 
 VERSION = "V01"
 logging.basicConfig(level=logging.INFO)
-logging.info( " %s Version %s" % (sys.argv[0], VERSION))
+logging.info( " %s Version %s" % (__file__, VERSION))
 
 #########################################################
 # methods
@@ -52,10 +51,9 @@ def make_html_table(image_list, image_html_file):
     ihf.close()
 
 def make_list(image_dir):
-    """ Build image data list from input image directory containing images for web page.
+    """ Returns image data list from input image directory.
         
-    This list is then used by above function that builds the html page.
-    
+    The list is then input to make_html_table to build html page.
     """
     image_list = []
     
