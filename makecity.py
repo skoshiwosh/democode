@@ -11,7 +11,7 @@ import maya.cmds as cmds
 # globals
 #########################################################
 
-VERSION = "V01"
+VERSION = "V02"
 logging.basicConfig(level=logging.INFO)
 logging.info( "makecity.py Version %s" % VERSION)
 
@@ -23,32 +23,54 @@ logging.info( "makecity.py Version %s" % VERSION)
 
 def mkcube(grp_name, cube_name):
     """ Make cube under group node at origin with dimension 1,1,1 and pivot at origin.
-    
-    Args:
+        
+        Args:
         grp_name: object name of parent group to contain cube
         cube_name: object name of cube node
         
-    Example:
+        Example:
         makecity.mkcube("building_grp", "cube0")
     """
     new_cube = cmds.polyCube(ax=[0, 1, 0], cuv=4, ch=True, name=cube_name)
     cmds.group(new_cube, name=grp_name)
     nodeattr = "%s.translateY" % new_cube[0]
     cmds.setAttr(nodeattr, 0.5)
+    
+    # another way to change pivot on geo
     #spattr = "%s.scalePivot" % new_cube[0]
     #rpattr = "%s.rotatePivot" % new_cube[0]
     #cmds.move(0, 0, 0, spattr, rpattr, absolute=True)
+    
+    # ToDo: fix bug so that pivot xform applies to cube and not group node
     cmds.xform(worldSpace=True, pivots=[0,0,0])
     cmds.makeIdentity(apply=True, t=1, r=1, s=1, n=0, pn=1 )
     return new_cube[0]
 
 
+####################################################################
+#
+# mkbldgs ToDo: complete function
+#
+# create simple geometry and group under group named by grp_name argument
+#
+####################################################################
+def mkbldgs(grp_name):
+    """
+        !!! Not implemented yet !!!
+        
+        Args:
+        bldg_grp: group node name to contain building geos
+    """
+    logging.info("mkbldgs: !!! Not implemented yet !!!")
+    return
+
+
 def copy2grid(bldg_grp, numrows=4, numcols=4, stepx=3, stepz=3, hide=True):
-    """ Duplicate geo over grid. 
+    """ Duplicate geo over grid.
         
-    Total number of copies = numrows * numcols.
+        Total number of copies = numrows * numcols.
         
-    Args:
+        Args:
         bldg_grp: group node containing geo to be copied
         numrows: number of rows in grid, default = 4
         numcols: number of columns in grid, default = 4
@@ -56,7 +78,7 @@ def copy2grid(bldg_grp, numrows=4, numcols=4, stepx=3, stepz=3, hide=True):
         stepz: z translate step for each geo copy, default = 3
         hide: Booleon to hide original geo after copies completed, default = True
         
-    Example:
+        Example:
         newcity = makecity.copy2grid("building_grp")
     """
     
@@ -67,10 +89,11 @@ def copy2grid(bldg_grp, numrows=4, numcols=4, stepx=3, stepz=3, hide=True):
             x = stepx * i
             z = stepz * j
             points.append((x,0,z))
-    #pprint(points)
+    #pprint(points)     # debug check of list of point tuples
 
     # get building geo under bldg_grp and copy to each point of grid
-    # ToDo: if more than 1 geo under group, then use random.choice(bldg_list) to get a random choice to be copied.
+    # ToDo: if more than 1 geo under group, use random.choice(bldg_list)
+    # to get random choice building geo to be copied.
     bldg_list = cmds.listRelatives(bldg_grp, type="transform")
     this_bldg = bldg_list[0]
     allgeo = []
@@ -80,9 +103,9 @@ def copy2grid(bldg_grp, numrows=4, numcols=4, stepx=3, stepz=3, hide=True):
         allgeo.append(newgeo[0])
 
     # group all copies under city_grp
-    #pprint(allgeo)
+    #pprint(allgeo)    # debug check of allgeo list
     city_grp = cmds.group(allgeo, name="city_grp", w=True)
-
+    
     # turn off original geo's visibility if hide is True
     if hide:
         cmds.setAttr("%s.visibility" % bldg_grp, 0)
@@ -92,6 +115,9 @@ def copy2grid(bldg_grp, numrows=4, numcols=4, stepx=3, stepz=3, hide=True):
 ####################################################################
 #
 # copy2vtx ToDo: complete function
+#
+# test whether geo is nurbs or poly mesh then use one of these code snippets
+# to create list of points for duplication like code in copy2grid
 #
 # vtx_list = cmds.xform('cube0.vtx[*]', q=True, ws=True, t=True)
 # vtx_points = zip(*[iter(vtx_list)]*3)
@@ -109,83 +135,40 @@ def copy2vtx(bldg_grp, obj):
         !!! Not implemented yet !!!
         
         Args:
-            bldg_grp: group node containing geo to be copied
-            obj: poly or nurbs surface containing position points for copy
-            
+        bldg_grp: group node containing geo to be copied
+        obj: poly or nurbs surface containing position points for copy
+        
         Example:
-            new_city = makecity.copy2vtx("building_grp", "nurbsSphere1")
-
+        new_city = makecity.copy2vtx("building_grp", "nurbsPlane1")
     """
     logging.info("copy2vtx: !!! Not implemented yet !!!")
-    return None
+    return
 
 
 ###############################################################################
 #
 # randgeo ToDo: add optional arguments and functionality
-#   - add optional arguments to randomize rotation
-#   - add optional values for both scale and rotate ranges for randomization
+#   - add optional arguments for range values to randomize scale
+#   - use hard-coded args in random.uniform as default values to randomize scale
+#   - add optional arguments to randomize rotation or do not randomize rotation at all
+#
 #
 ###############################################################################
 
 def randgeo(city_grp = None):
     """ Randomize scale on all geo under group.
-       
+        
         Args:
-            city_grp: group node containing geo to randomize. If None then get geo from selection.
-    
+        city_grp: group node containing geo to randomize. If None then get geo from selection.
     """
     if not city_grp:
         allgeo = cmds.ls(sl=True)
     else:
         allgeo = cmds.listRelatives(city_grp, type="transform")
-
+    
     for each in allgeo:
         this_scale = (round(random.uniform(0.5, 1.5), 3),
                       round(random.uniform(0.5, 2.0), 3),
                       round(random.uniform(0.5, 1.5), 3))
         cmds.scale(this_scale[0], this_scale[1], this_scale[2], each, scaleXYZ=True, absolute=True)
-
-
-# old version
-def copygeo(geo=None, numcopy=4, x=3, z=3):
-    """ Duplicate geo over grid.
-        
-        Keyword args:
-        geo: node name, default of None will then use first node in selection list as input
-        numcopy: number of nodes to be copied per row and per column
-        x: translation in x-axis of copies
-        y: translation in z-axis of copies
-    """
-    
-    if not geo:
-        sel = cmds.ls(sl=True)
-        if len(sel):
-            geo = sel[0]
-        else:
-            print("Select node to copy")
-            return
-
-    print("geo",geo)
-    newgeo = cmds.duplicate(geo)
-    allgeo = [geo, newgeo[0]]
-    cmds.move(x, 0, 0)
-    for each in range(numcopy):
-        newgeo = cmds.duplicate(rr=True, st=True)
-        allgeo.append(newgeo[0])
-
-    print("allgeo", allgeo)
-    cmds.select(allgeo, r=True)
-    newgeo = cmds.duplicate()
-    allgeo.extend(newgeo)
-    print("newgeo", newgeo)
-    cmds.move(0, 0, -z, relative=True)
-    for each in range(numcopy - 1):
-        newgeo = cmds.duplicate(rr=True, st=True)
-        print("newgeo", newgeo)
-        allgeo.extend(newgeo)
-
-    cmds.select(allgeo, r=True)
-    return allgeo
-
 
