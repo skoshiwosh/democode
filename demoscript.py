@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 """
     Example python script used for teaching.
+    
+    File: demoscript.py
+    Version: V02
+    Date: Sept 24, 2019
+    Author: Suzanne Berger
+    Contact: zanefx7@gmail.com       
 """
 
 import sys
