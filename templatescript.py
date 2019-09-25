@@ -3,6 +3,10 @@
     Example template python script.
     
     File: templatescript.py
+    Version: 1.0
+    Date: Sept 24, 2019
+    Author: Suzanne Berger
+    Contact: zanefx7@gmail.com
 """
 
 import sys
