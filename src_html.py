@@ -13,7 +13,7 @@ HTML_HEAD = [
     '<html>',
     '<head>',
     '<meta charset="UTF-8">',
-    '<title>Patterns</title>',
+    '<title>$WEBTITLE</title>',
     '<style type="text/css">',
     'body {background: #999999;',
     'color: black;',
@@ -24,7 +24,7 @@ HTML_HEAD = [
     '</head>',
     '<body>',
     '<table border="1" cellpadding="5" cellspacing="10">',
-    '<caption><h1> Patterns </h1></caption>'
+    '<caption><h1>$WEBTITLE</h1></caption>'
 ]
 
 HTML_IMAGE = [
