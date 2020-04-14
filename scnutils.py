@@ -64,6 +64,7 @@ def getKeyValues(nodeAttr, startFrame=None, endFrame=None):
 
 
 def getUnits(utype):
+    ''' return unit settings for linear or angle type '''
     if utype == 'linear':
         return cmds.currentUnit( query=True, fullName=True, linear=True )
     elif utype == 'angle':
@@ -80,30 +81,9 @@ def getFps():
     #fps = 30.0
     return fps
 
-def compStartEnd():
-    ''' compare start end key frame values '''
-    sel = cmds.ls(sl=True)
-    myAttrs = []
-    if len(sel):
-        selNode = sel[0]
-        myAttrs = cmds.listAttr(selNode, userDefined=True)
-    else:
-        print("Select a node to compare start and end frame values")
-        return
-        
-    for each in myAttrs:
-        objAttr = '%s.%s' % (selNode,each)
-        start = cmds.findKeyframe( selNode,which='first',at=each)
-        startval = cmds.getAttr(objAttr,time=start)
-        end = cmds.findKeyframe( selNode,which='last',at=each)
-        endval = cmds.getAttr(objAttr,time=end)
-        if end != start:
-            print("*** Start End Frame Values Differ ***",each, start, startval, end, endval)
-        else:
-            print(each, start, startval, end, endval)
-    
 
 def getAnimChannels(nodeName,include=None):
+    ''' return list of input node attributes that are keyable '''
     if not cmds.objExists(nodeName):
         return []
     
@@ -125,6 +105,7 @@ def getAnimChannels(nodeName,include=None):
     return animChannels     
     
 def getAnimData(nodeName, animChannels, frame):
+    ''' return list of attribute values at input frame '''
     animData = []
     for each in animChannels:
         objAttr = '%s.%s' % (nodeName,each)        
@@ -149,6 +130,7 @@ def getMayaScenes(mayaScenePath):
     return mayaScenes
 
 def getSceneFile():
+    ''' return name of open scene '''
     return cmds.file(q=True,sn=True)
      
 def openScene(scenePath):
@@ -170,7 +152,7 @@ def mergeScene(scenePath, namespace = None):
         return False
 
 def exportfbx(exportnodes=None):
-    ''' export maya to fbx '''
+    ''' export maya scene to fbx '''
     scenePath = cmds.file(q=True,sceneName=True)
     fbxScenePath = os.path.splitext(scenePath)[0]+'.fbx'
     
@@ -190,7 +172,7 @@ def exportfbx(exportnodes=None):
     return fbxScenePath
 
 def isStandalone():
-    ''' import maya.standalone '''
+    ''' return True if maya running in non-gui batch mode '''
     try:
         import maya.standalone
         maya.standalone.initialize(name='python')
