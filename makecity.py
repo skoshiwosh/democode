@@ -89,7 +89,7 @@ def copy2grid(bldg_grp, numrows=4, numcols=4, stepx=3, stepz=3, hide=True):
             x = stepx * i
             z = stepz * j
             points.append((x,0,z))
-    #pprint(points)     # debug check of list of point tuples
+    pprint(points)     # debug check of list of point tuples
 
     # get building geo under bldg_grp and copy to each point of grid
     # ToDo: if more than 1 geo under group, use random.choice(bldg_list)
@@ -120,12 +120,16 @@ def copy2grid(bldg_grp, numrows=4, numcols=4, stepx=3, stepz=3, hide=True):
 # to create list of points for duplication like code in copy2grid
 #
 # vtx_list = cmds.xform('cube0.vtx[*]', q=True, ws=True, t=True)
-# vtx_points = zip(*[iter(vtx_list)]*3)
-# pprint(vtx_points)
+# points = [(vtx_list[i], vtx_list[i+1], vtx_list[i+2]) for i in xrange(0,len(vtx_list),3)]
+# !!! OR !!!
+# points = zip(*[iter(vtx_list)]*3)
 #
 # cv_list = cmds.xform('nurbsSphere1.cv[*]', q=True, ws=True, t=True)
-# cv_points = zip(*[iter(cv_list)]*3)
-# pprint(cv_points)
+# points = [(cv_list[i], cv_list[i+1], cv_list[i+2]) for i in xrange(0,len(cv_list),3)]
+# !!! OR !!!
+# points = zip(*[iter(cv_list)]*3)
+#
+# pprint(points)
 #
 ####################################################################
 
@@ -171,4 +175,3 @@ def randgeo(city_grp = None):
                       round(random.uniform(0.5, 2.0), 3),
                       round(random.uniform(0.5, 1.5), 3))
         cmds.scale(this_scale[0], this_scale[1], this_scale[2], each, scaleXYZ=True, absolute=True)
-
