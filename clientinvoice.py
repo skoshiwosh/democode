@@ -13,6 +13,7 @@ import os
 from datetime import date
 import argparse
 import json
+from pprint import pprint
 
 class ClientInvoice():
     """ class to define client invoice data """
@@ -20,6 +21,8 @@ class ClientInvoice():
     def __init__(self):
         self.client_name = ""
         self.client_address = ""
+        self.client_phone = ""
+        self.client_email = ""
         self.hours_worked = 0
         self.material_cost = 0
         self.discount = 0
@@ -32,6 +35,12 @@ class ClientInvoice():
     
     def set_address(self, client_address):
         self.client_address = client_address
+    
+    def set_phone(self, client_phone):
+        self.client_phone = client_phone
+    
+    def set_email(self, client_email):
+        self.client_email = client_email
 
     def set_start(self, start_date):
         self.start_date = start_date
@@ -45,7 +54,7 @@ class ClientInvoice():
             self.total_cost -= ClientInvoice.labor_cost * self.discount
         return self.total_cost
 
-    def newjson(self, client_name, jsonfile=None):
+    def newjson(self, client_name, client_address='', client_phone='', client_email='', jsonfile=None):
         parts = client_name.lower().split()
         basename = "{}.json".format(parts[0][0:2] + parts[-1])
         if not jsonfile:
@@ -57,13 +66,25 @@ class ClientInvoice():
         
         self.set_name(client_name)
         self.set_start(date.today().isoformat())
+        self.set_address(client_address)
+        self.set_phone(client_phone)
+        self.set_email(client_email)
         
+        client_dict = self.getdict()
+        
+        client_file = open(jsonfile, 'w')
+        json.dump(client_dict, client_file, indent=4)
+        print("New client: {}".format(self.client_name))
+        print("Created new client invoice json file: {}".format(jsonfile))
+
         return jsonfile
 
     def getdict(self):
         client_dict = {
             "client_name": self.client_name,
             "client_address": self.client_address,
+            "client_phone": self.client_phone,
+            "client_email": self.client_email,
             "start_date": self.start_date,
             "end_date": self.end_date,
             "hours_worked": self.hours_worked,
@@ -79,27 +100,26 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = 'Create or update json file containing client invoice data')
     parser.add_argument('-n', '--name', action='store', dest='client_name', default='', help='full client name')
     parser.add_argument('-a', '--address', action='store', dest='client_address', default='', help='full client address')
+    parser.add_argument('-p', '--phone', action='store', dest='client_phone', default='', help='client phone number')
+    parser.add_argument('-e', '--email', action='store', dest='client_email', default='', help='client email address')
     parser.add_argument('--hours', type=int, action='store', dest='hours_worked', default=0, help='hours worked')
     parser.add_argument('-m', '--matcost', type=int, action='store', dest='material_cost', default=0, help='material cost')
-    parser.add_argument('-j', '--jsonfile', action='store', dest='jsonfile', default=None, help='json file name to be created or updated')
+    parser.add_argument('jsonfile', action='store', help='json file name to be created or updated')
     args = parser.parse_args()
 
+    #print("sys.argv", sys.argv)
+    #print("args")
+    pprint(args)
+    
     this_client = ClientInvoice()
     
     if args.client_name:
-        this_jsonfile = this_client.newjson(args.client_name, args.jsonfile)
+        this_jsonfile = this_client.newjson(args.client_name, args.client_address,
+                                            args.client_phone, args.client_email, args.jsonfile)
         if this_jsonfile is None:
             print("Error: Invalid jsonfile argument")
             sys.exit(1)
-        if args.client_address:
-            this_client.set_address(args.client_address)
 
-        client_dict = this_client.getdict()
-
-        client_file = open(this_jsonfile, 'w')
-        json.dump(client_dict, client_file, indent=4)
-        print("New client: {}".format(this_client.client_name))
-        print("Created new client invoice json file: {}".format(this_jsonfile))
 
     elif os.path.isfile(args.jsonfile):
         client_file = open(args.jsonfile, 'r+')
