@@ -71,13 +71,27 @@ class ClientInvoice():
         self.set_email(client_email)
         
         client_dict = self.getdict()
-        
-        client_file = open(jsonfile, 'w')
-        json.dump(client_dict, client_file, indent=4)
+        self.client_file = open(jsonfile, 'w')
+        json.dump(client_dict, self.client_file, indent=4)
         print("New client: {}".format(self.client_name))
         print("Created new client invoice json file: {}".format(jsonfile))
-
         return jsonfile
+
+    def loadjson(self, jsonfile):
+        if not os.path.isfile(jsonfile):
+            return None
+        self.client_file = open(jsonfile, 'r+')
+        client_dict = json.load(self.client_file)
+        print("current client json data")
+        print(client_dict)
+        return client_dict
+            
+    def updatejson(self):
+        client_dict = self.getdict()
+        self.client_file.seek(0)
+        json.dump(client_dict, self.client_file, indent=4)
+        self.client_file.truncate()
+        return client_dict
 
     def getdict(self):
         client_dict = {
@@ -120,35 +134,36 @@ if __name__ == "__main__":
             print("Error: Invalid jsonfile argument")
             sys.exit(1)
 
-
-    elif os.path.isfile(args.jsonfile):
-        client_file = open(args.jsonfile, 'r+')
-        client_dict = json.load(client_file)
-        print("current client json data")
-        print(client_dict)
-
+    else:
+        client_dict = this_client.loadjson(args.jsonfile)
+        if client_dict is None:
+            print("Error: Invalid jsonfile argument")
+            parser.print_help()
+            sys.exit(1)
+        
         this_client.set_name(client_dict['client_name'])
         this_client.set_start(client_dict['start_date'])
         if args.client_address:
             this_client.set_address(args.client_address)
         else:
             this_client.set_address(client_dict['client_address'])
+        if args.client_phone:
+            this_client.set_phone(args.client_phone)
+        else:
+            this_client.set_phone(client_dict['client_phone'])
+        if args.client_email:
+            this_client.set_email(args.client_email)
+        else:
+            this_client.set_email(client_dict['client_email'])
 
         this_client.hours_worked = args.hours_worked
         this_client.material_cost = args.material_cost
         this_client.set_totalcost()
         this_client.set_end(date.today().isoformat())
-        client_dict = this_client.getdict()
-        print("updated client json data")
+
+        client_dict = this_client.updatejson()
+        print("Updating client json data")
         print(client_dict)
-
-        client_file.seek(0)
-        json.dump(client_dict, client_file, indent=4)
-        client_file.truncate()
         print("Updated existing client invoice json file: {}".format(args.jsonfile))
-
-    else:
-        print("Error: Invalid arguments")
-        parser.print_help()
 
     sys.exit()
