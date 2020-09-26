@@ -28,16 +28,16 @@ print("__name__ is this: %s" % __name__)
 #########################################################
 
 # this logic demostrates if/elif/else
-# same list is also returned by one line statement: range(min(arg2,arg2), max(arg1,arg2)+1)
+# same list is also returned by one line statement: range(min(arg1,arg2), max(arg1,arg2)+1)
 def cmp_ints(arg1, arg2):
     """Return list of numbers between parameters arg1 and arg2 sorted min to max."""
     
     if arg1 > arg2:
         print("cmp_ints: arg1: {} is bigger".format(arg1))
-        return range(arg2, arg1)
+        return range(arg2, arg1+1)
     elif arg2 > arg1:
         print("cmp_ints: arg2: {} is bigger".format(arg2))
-        return range(arg1, arg2)
+        return range(arg1, arg2+1)
     else:
         print("cmp_ints: arg1: {} and arg2: {} are equal".format(arg1, arg2))
         return [arg1]
@@ -68,17 +68,14 @@ if __name__ == "__main__":
 
     print("sys.argv list:", sys.argv)
     if len(sys.argv) < 3:
-        logging.error(" {} is missing arguments".format(sys.argv[0]))
+        logging.error("{} is missing arguments".format(sys.argv[0]))
         sys.exit(1)
-    else:
-        arg1 = sys.argv[1]
-        arg2 = sys.argv[2]
 
     try:
-        i = int(arg1)
-        j = int(arg2)
+        i = int(sys.argv[1])
+        j = int(sys.argv[2])
     except:
-        logging.error(" Arguments {} and {} are not integers".format(arg1, arg2))
+        logging.error("{} arguments '{}' and/or '{}' are not integers".format(sys.argv[0], sys.argv[1], sys.argv[2]))
         sys.exit(1)
         
     range_list = cmp_ints(i, j)
