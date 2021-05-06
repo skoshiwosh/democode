@@ -1,4 +1,13 @@
 #!/usr/bin/env python
+"""
+   Generate a cityscape from simple geometry copied to grid or surface
+   
+   File: makecity.py
+   Version: 2.0
+   Date: Oct 18, 2019
+   Author: Suzanne Berger
+   Contact: zanefx7@gmail.com
+"""
 import sys
 import random
 import logging
