@@ -11,10 +11,24 @@
 import sys
 import os
 import glob
-import re
 import shutil
 import argparse
+import logging
 
+#########################################################
+# globals
+#########################################################
+
+VERSION = "V01"
+
+logging.basicConfig(level=logging.INFO)
+#logging.basicConfig(level=logging.DEBUG)
+logging.info( " %s Version %s" % (sys.argv[0], VERSION))
+
+
+#########################################################
+# methods
+#########################################################
 
 def get_last(verdir, vfroot, vfext, vstr='_v'):
     """Return last version of file under 'versions' subdirectory."""
@@ -32,11 +46,14 @@ def get_next(last_verfile, vstr='_v'):
     
     if not last_verfile:
         return '%s01' % vstr
-        
-    next = ''
-    p1 = re.compile('%s[0-9][0-9]' % vstr)
-    m1 = p1.search(last_verfile)
-    nv = int(m1.group(0)[-2:]) + 1
+    
+    vstr_index = last_verfile.rfind(vstr)
+    i = len(vstr)
+
+    logging.debug(" last_verfile: {}".format(last_verfile))
+    logging.debug(" vstr_index: {}, i: {}".format(vstr_index,i))
+
+    nv = int(last_verfile[vstr_index+i:vstr_index+i+2]) + 1
     next = '%s%02d' % (vstr, nv)
     return next
 
@@ -49,20 +66,26 @@ def upv(verfile, vstr='_v'):
     verdir = os.path.join(abspath,'versions')
     if not os.path.exists(verdir):
         os.mkdir(verdir)
-        print("Creating %s" % verdir)
+        logging.info(" Creating {}".format(verdir))
 
     vfroot, vfext = os.path.splitext(os.path.basename(verfile))
 
     # get last version filename, then create new version file with 1 added to version suffix
     last_verfile = get_last(verdir, vfroot, vfext, vstr)
     next = get_next(last_verfile, vstr)
-    vfnext = vfroot + next + vfext
+    #vfnext = vfroot + next + vfext
+    vfnext = "{}{}{}".format(vfroot,next,vfext)
     nextverpath = os.path.join(abspath,'versions',vfnext)
 
     # copy the input file to new version file under versions subdirectory
     shutil.copy(verfile, nextverpath)
-    print("Copyied %s to %s" % (verfile, nextverpath))
+    logging.info(" Copyied {} to {}".format(verfile, nextverpath))
     return
+
+
+#########################################################
+# main
+#########################################################
 
 if __name__ == "__main__":
     # parse arguments
@@ -71,9 +94,11 @@ if __name__ == "__main__":
     parser.add_argument('verfile', action='store', help='input file to be copied with version string to versions subdirectory')
     args = parser.parse_args()
 
+    logging.debug(" args: {}".format(args))
+
     # make sure input file argument is really a file
     if not os.path.isfile(args.verfile):
-        print("***Error*** Invalid file argument: %s\n" % args.verfile)
+        logging.error(" Invalid file argument: {}\n".format(args.verfile))
         parser.print_help()
         sys.exit(1)        
 
