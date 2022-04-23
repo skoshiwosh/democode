@@ -33,7 +33,7 @@ def getKeyValues(nodeAttr, startFrame, endFrame):
     keys = cmds.keyframe(nodeAttr, time=(startFrame, endFrame), query=True, valueChange=True, timeChange=True)
     #print(nodeAttr)
     #pprint(keys)
-    #key_values = []
+    key_values = []
     if keys:
         key_values = [(keys[i], keys[i+1]) for i in range(0,len(keys),2)]
     return key_values
@@ -55,6 +55,7 @@ def allKeyValues(jsonit=False):
 
     if jsonit:
         this_scene = cmds.file(q=True, sn=True)
+        # change to save under data folder of maya project
         json_file = "{}_animdata.json".format(os.path.splitext(this_scene)[0])
         json_fileobj = open(json_file, 'w')
         json.dump(keyval_dict, json_fileobj, indent=4)
