@@ -24,6 +24,8 @@ VERSION = "V02"
 logging.basicConfig(level=logging.INFO)
 logging.info( "makecity.py Version %s" % VERSION)
 
+#ToDo: add random.seed(any number) so that behavior based on any random number
+#generation in functions below is always the same when re-running the script
 
 #########################################################
 # methods
@@ -91,7 +93,8 @@ def copy2grid(bldg_grp, numrows=4, numcols=4, stepx=3, stepz=3, hide=True):
         newcity = makecity.copy2grid("building_grp")
     """
     
-    # create list of xyz points of grid
+    # create list of xyz points of grid where each xyz point in list is a tuple
+    # ToDo: replace logic that builds list with list comprehension
     points = []
     for i in range(numcols):
         for j in range(numrows):
@@ -129,12 +132,12 @@ def copy2grid(bldg_grp, numrows=4, numcols=4, stepx=3, stepz=3, hide=True):
 # to create list of points for duplication like code in copy2grid
 #
 # vtx_list = cmds.xform('cube0.vtx[*]', q=True, ws=True, t=True)
-# points = [(vtx_list[i], vtx_list[i+1], vtx_list[i+2]) for i in xrange(0,len(vtx_list),3)]
+# points = [(vtx_list[i], vtx_list[i+1], vtx_list[i+2]) for i in range(0,len(vtx_list),3)]
 # !!! OR !!!
 # points = zip(*[iter(vtx_list)]*3)
 #
 # cv_list = cmds.xform('nurbsSphere1.cv[*]', q=True, ws=True, t=True)
-# points = [(cv_list[i], cv_list[i+1], cv_list[i+2]) for i in xrange(0,len(cv_list),3)]
+# points = [(cv_list[i], cv_list[i+1], cv_list[i+2]) for i in range(0,len(cv_list),3)]
 # !!! OR !!!
 # points = zip(*[iter(cv_list)]*3)
 #
