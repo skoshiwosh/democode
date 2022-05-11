@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-   Generate a cityscape from simple geometry copied to grid or surface
+   Generate a cityscape from simple geometry copied to grid or surface.
    
    File: makecity.py
    Version: 2.0
@@ -22,7 +22,7 @@ import maya.cmds as cmds
 
 VERSION = "V02"
 logging.basicConfig(level=logging.INFO)
-logging.info( "makecity.py Version %s" % VERSION)
+logging.info("makecity.py Version %s" % VERSION)
 
 #ToDo: add random.seed(any number) so that behavior based on any random number
 #generation in functions below is always the same when re-running the script
@@ -187,3 +187,5 @@ def randgeo(city_grp = None):
                       round(random.uniform(0.5, 2.0), 3),
                       round(random.uniform(0.5, 1.5), 3))
         cmds.scale(this_scale[0], this_scale[1], this_scale[2], each, scaleXYZ=True, absolute=True)
+    return
+
