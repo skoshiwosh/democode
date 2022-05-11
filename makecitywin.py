@@ -1,12 +1,13 @@
 #!/usr/bin/env python
-'''
+"""
     UI for makecity
     
-    @version: 1.0
-    @date: Novemeber 2019
-    @authors: Suzanne Berger
-    @contact: zanefx7@gmail.com
-'''
+    File: makecitywin.py
+    Version: 1.0
+    Date: Novemeber 2019
+    Author: Suzanne Berger
+    Contact: zanefx7@gmail.com
+"""
 
 import sys
 import logging
@@ -15,8 +16,9 @@ from pprint import pprint
 from PySide2 import QtCore, QtGui, QtWidgets
 from maya import OpenMayaUI as omui
 from shiboken2 import wrapInstance
+import maya.cmds as cmds
+import maya.OpenMaya as om
 
-#import makecity_sb as makecity
 import makecity
 
 #########################################################
@@ -26,10 +28,15 @@ import makecity
 VERSION = "V01"
 
 logging.basicConfig(level=logging.INFO)
-logging.info( " %s Version %s" % (__file__, VERSION))
+logging.info(" %s Version %s" % (__file__, VERSION))
 
-mayaMainWindowPtr = omui.MQtUtil.mainWindow()
-mayaMainWindow = wrapInstance(long(mayaMainWindowPtr), QtWidgets.QWidget)
+def mayawindow():
+    """ Return Maya's Main Window Object """
+    mayaMainWindowPtr = omui.MQtUtil.mainWindow()
+    return wrapInstance(int(mayaMainWindowPtr), QtWidgets.QWidget)
+    #return wrapInstance(long(mayaMainWindowPtr), QtWidgets.QWidget)
+    # versions of Maya earlier than 2022 are based on Python 2 and
+    # require 'long' type conversion instead of 'int'
 
 
 #########################################################
@@ -38,14 +45,16 @@ mayaMainWindow = wrapInstance(long(mayaMainWindowPtr), QtWidgets.QWidget)
 
 class MakeCityWin(QtWidgets.QDialog):
 
-    def __init__(self, parent=mayaMainWindow):
-        QtWidgets.QDialog.__init__(self, parent)
+    def __init__(self, parent=mayawindow()):
         
-        self.setWindowFlags(QtCore.Qt.Window)
+        if parent is not None:
+            QtWidgets.QDialog.__init__(self, parent)
+        
+        self.setWindowFlags(QtCore.Qt.Window)      # for windows
+        #self.setWindowFlags(QtCore.Qt.Tool)       # for mac osx
         
         self._initUI()
         self._connectSignals()
-        #self.show()
         
     def _initUI(self):
         self.setWindowTitle("Make City")
@@ -91,7 +100,7 @@ class MakeCityWin(QtWidgets.QDialog):
         self.stepX_spinBox = QtWidgets.QSpinBox()
         self.stepX_spinBox.setValue(4)
         self.stepX_spinBox.setFixedSize(41, 24)
-        self.stepZ_label = QtWidgets.QLabel("StepY ")
+        self.stepZ_label = QtWidgets.QLabel("StepZ ")
         self.stepZ_label.setFixedSize(35, 21)
         self.stepZ_spinBox = QtWidgets.QSpinBox()
         self.stepZ_spinBox.setValue(4)
@@ -151,7 +160,9 @@ class MakeCityWin(QtWidgets.QDialog):
         self.selsurf_pushButton.clicked.connect(self.selsurf)
 
     def closeEvent(self, event):
-        print("Closing Window")
+        #print("Closing Make City Window")
+        #om.MGlobal.displayInfo("Closing Make City Window")
+        logging.info("Closing Make City Window")
         event.accept()
 
 
@@ -160,19 +171,40 @@ class MakeCityWin(QtWidgets.QDialog):
 ############################################################
 
     def mkbldgs(self):
-        print("Make Buildings clicked")
-        #makecity.mkbldgs("bldg_grp", "cube1", "cylinder1")
-        makecity.mkcube("building_grp", "cube0")
+        logging.info("Make Buildings clicked")
+        cube = cylinder = ""
+        sel = False
+        
+        if self.cube_checkBox.isChecked():
+            cube = "cube0"
+        
+        if self.cylinder_checkBox.isChecked():
+            cylinder = "cylinder0"
+        
+        if self.selection_checkBox.isChecked():
+            sel = True
+        
+        #makecity.mkbldgs("bldg_grp", cube, cylinder, sel)
+        makecity.mkcube("bldg_grp", "cube0")
 
     def mkcity(self):
-        print("Make City clicked")
-        #makecity.copy2grid("bldg_grp")
-        newcity = makecity.copy2grid("building_grp")
-        #makecity.randgeo("city_grp", randrotate=True)
+        logging.info("Make City clicked")
+        if self.grid_radioButton.isChecked():
+            rows = self.rows_spinBox.value()
+            cols = self.cols_spinBox.value()
+            # ToDo: add stepsize
+            newcity = makecity.copy2grid("bldg_grp", numrows=rows, numcols=cols)
+        else:
+            obj = self.surface_lineEdit.text()
+            newcity = makecity.copy2vtx("bldg_grp", obj)
+        
+        #makecity.randgeo(newcity, randrotate=True)
         makecity.randgeo(newcity)
 
     def selsurf(self):
-        print("Select Surface clicked")
+        logging.info("Select Surface clicked")
+        surface = cmds.ls(sl=True)[0]
+        self.surface_lineEdit.setText(surface)
 
 
 ############################################################
@@ -181,8 +213,10 @@ class MakeCityWin(QtWidgets.QDialog):
 
 if __name__ == '__main__':
     
+    logging.info("Running as main")
     app = QtWidgets.QApplication(sys.argv)
-    makecitywin = MakeCityWin()
+    makecitywin = MakeCityWin(parent=None)
+    makecitywin.show()
     sys.exit(app.exec_())
 
 
