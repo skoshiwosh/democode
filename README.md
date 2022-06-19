@@ -10,13 +10,6 @@ ToDo:
 
 Files:
 
-python_docs.pdf
-- list of links to important web docs on Python, PySide2 and Maya Python commands
-
-python_class_outline.pdf
-- my own class outline proposal for teaching python and technical infrastructure to visual effects students
-- this does not necessarily correlate with python course taught at specific institutions
-
 scriptinfo.pdf
 - description of example python scripts to be used for teaching Python
 
