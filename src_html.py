@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 """
-    Template html with token strings for creating web page with images from input directory
+    Template html with token strings for creating web page with image files
     
-    @version: 1.0
-    @date: March 2016
-    @author: Suzanne Berger
-    @contact: zanefx7@gmail.com
+    Version: 1.0
+    Date: March 2016
+    Author: Suzanne Berger
+    Contact: zanefx7@gmail.com
 """
 
 HTML_HEAD = [
