@@ -312,6 +312,7 @@ class InvoiceWin(QtWidgets.QDialog):
                             QtWidgets.QFileDialog.ShowDirsOnly | QtWidgets.QFileDialog.DontResolveSymlinks)
 
         self.start_dateEdit.setDate(QtCore.QDate.currentDate())
+        self.end_dateEdit.setDate(QtCore.QDate.currentDate())
         self.file_lineEdit.setText(self.jsondir)
         self.newjson = True
         return

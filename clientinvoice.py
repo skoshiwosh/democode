@@ -23,7 +23,7 @@ class ClientInvoice():
         self.client_address = ""
         self.client_phone = ""
         self.client_email = ""
-        self.hours_worked = 0
+        self.hours_worked = 1
         self.material_cost = 0
         self.discount = 0
         self.total_cost = 0
@@ -66,6 +66,7 @@ class ClientInvoice():
         
         self.set_name(client_name)
         self.set_start(date.today().isoformat())
+        self.set_end(date.today().isoformat())
         self.set_address(client_address)
         self.set_phone(client_phone)
         self.set_email(client_email)
@@ -118,7 +119,7 @@ if __name__ == "__main__":
     parser.add_argument('-e', '--email', action='store', dest='client_email', default='', help='client email address')
     parser.add_argument('--hours', type=int, action='store', dest='hours_worked', default=0, help='hours worked')
     parser.add_argument('-m', '--matcost', type=int, action='store', dest='material_cost', default=0, help='material cost')
-    parser.add_argument('jsonfile', action='store', help='json file name to be created or updated')
+    parser.add_argument('jsonfile', action='store', nargs='?', default=os.getcwd(), help='json file name to be created or updated')
     args = parser.parse_args()
 
     #print("sys.argv", sys.argv)
@@ -143,14 +144,17 @@ if __name__ == "__main__":
         
         this_client.set_name(client_dict['client_name'])
         this_client.set_start(client_dict['start_date'])
+
         if args.client_address:
             this_client.set_address(args.client_address)
         else:
             this_client.set_address(client_dict['client_address'])
+
         if args.client_phone:
             this_client.set_phone(args.client_phone)
         else:
             this_client.set_phone(client_dict['client_phone'])
+
         if args.client_email:
             this_client.set_email(args.client_email)
         else:
