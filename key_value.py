@@ -21,9 +21,10 @@ from maya import cmds
 # globals
 #########################################################
 
-VERSION = "V02"
+VERSION = "V03"
 logging.basicConfig(level=logging.INFO)
-logging.info("%s Version %s" % (__file__,VERSION))
+#logging.basicConfig(level=logging.DEBUG)
+logging.info(f"{__file__} Version {VERSION}")
 
 #########################################################
 # methods
@@ -31,8 +32,8 @@ logging.info("%s Version %s" % (__file__,VERSION))
 
 def getKeyValues(nodeAttr, startFrame, endFrame):
     keys = cmds.keyframe(nodeAttr, time=(startFrame, endFrame), query=True, valueChange=True, timeChange=True)
-    #print(nodeAttr)
-    #pprint(keys)
+    logging.debug(nodeAttr)
+    logging.debug(keys)
     key_values = []
     if keys:
         key_values = [(keys[i], keys[i+1]) for i in range(0,len(keys),2)]
@@ -60,7 +61,7 @@ def allKeyValues(jsonit=False):
         json_fileobj = open(json_file, 'w')
         json.dump(keyval_dict, json_fileobj, indent=4)
         json_fileobj.close()
-        logging.info("Saved animation data to file: %s" % json_file)
+        logging.info(f"Saved animation data to file: {json_file}")
     
     return keyval_dict
 
@@ -86,11 +87,11 @@ if __name__ == '__main__':
             sys.exit(1)
 
         scenefile = sys.argv[1]
-        logging.info("Loading input Maya scene file %s" % scenefile)
+        logging.info(f"Loading input Maya scene file {scenefile}")
         try:
             cmds.file(scenefile, iv=True, force=True, open=True)
         except:
-            logging.error("Unable to open Maya scene file %s" % scenefile)
+            logging.error(f"Unable to open Maya scene file {scenefile}")
             sys.exit(1)
 
         # Todo: use argparse and add option for saving key_value_dict to json
@@ -98,6 +99,8 @@ if __name__ == '__main__':
             key_value_dict = allKeyValues(jsonit=True)
         else:
             key_value_dict = allKeyValues()
+
+        logging.info("Key Values")
         pprint(key_value_dict)
 
     sys.exit(0)
