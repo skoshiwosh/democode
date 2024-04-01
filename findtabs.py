@@ -17,6 +17,21 @@
 
 import sys
 import os
+import logging
+
+#########################################################
+# globals
+#########################################################
+
+VERSION = "V01"
+#logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
+logging.info(f"{__file__} Version {VERSION}")
+
+logging.debug(f"$$$ {__name__} $$$")
+#########################################################
+# methods
+#########################################################
 
 def findtabinfiles(dirname,allfiles):
     """
@@ -29,7 +44,8 @@ def findtabinfiles(dirname,allfiles):
         for i in range(len(all_lines)):
             each = all_lines[i]
             if '\t' in each and len(each) > 3:
-                print("*** hard tab *** line",i+1,filepath)
+                #print("*** hard tab *** line",i+1,filepath)
+                logging.info(f"*** hard tab *** line {i+1} in {filepath}")
                 break
     return
 
@@ -40,15 +56,23 @@ def findtabs(topdir,skipversions = False):
     # search tree of directories and files
     for root,dirs,files in os.walk(topdir):
         if skipversions and os.path.split(root)[-1] == 'versions':
-            print("skipping versions under", root)
+            logging.info(f"skipping versions under {root}")
             continue
         # get list of python files then call findtabinfiles
+        #print(f"root dir is: {root}")
+        logging.debug(f"root dir is: {root}")
         pyfiles = [each for each in files if os.path.splitext(each)[-1] == '.py']
         if pyfiles:
             findtabinfiles(root,pyfiles)
     return
 
+#########################################################
+# main
+#########################################################
+
 if __name__ == "__main__":
+    #print(sys.argv)
+    logging.debug(sys.argv)
     if len(sys.argv) > 1:
         topdir = os.path.abspath(sys.argv[1])
     else:
