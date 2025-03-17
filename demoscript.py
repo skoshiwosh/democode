@@ -17,8 +17,8 @@ import logging
 #########################################################
 
 VERSION = "V02"
-#logging.basicConfig(level=logging.INFO)
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
+#logging.basicConfig(level=logging.DEBUG)
 logging.info("%s Version %s" % (__file__, VERSION))     # this is old-style string formating
 
 logging.debug("__name__ is this: %s" % __name__)
@@ -82,12 +82,13 @@ if __name__ == "__main__":
         sys.exit(1)
         
     range_list = cmp_ints(i, j)
-    print("length of range_list is: {}\nhere is the list: {}".format(len(range_list), range_list))
+    print(f"length of range_list is: {len(range_list)}\nhere is the list: {range_list}")
     for each in range_list:
         print(each)
 
     powers = get_powers(max(i, j))      # use built-in max function to pass in max integer
-    print("powers: {}".format(powers))
+    #print("powers: {}".format(powers))
+    print(f"powers: {powers}")
 
     # exiting and all is good       
     sys.exit()
