@@ -22,16 +22,20 @@ import src_html     # template html with token strings to be replaced by input f
 
 VERSION = "V01"
 logging.basicConfig(level=logging.INFO)
-logging.info( " %s Version %s" % (__file__, VERSION))
+logging.info(f" {__file__} Version {VERSION}")
 
 #########################################################
 # methods
 #########################################################
 
-def make_html_table(image_list, image_html_file, web_title):
+def make_html_table(image_dir, web_title):
     """ Build html table and save to image_html_file. """
-    
-    ihf = open(image_html_file,'w')
+
+    image_list = make_list(image_dir)
+    pprint(image_list)
+
+    index_html_file = '%s/index.html' % image_dir
+    ihf = open(index_html_file,'w')
     html_head = src_html.HTML_HEAD
 
     html_head = [l.replace('$WEBTITLE',web_title) for l in html_head]
@@ -82,13 +86,13 @@ if __name__ == '__main__':
         image_dir = sys.argv[1]
         web_title = sys.argv[2]
     else:
-        logging.error(" Missing Arguments: Image Directory and Web Title")
+        logging.error(" Missing 2 Arguments: Image Directory and Web Title")
         sys.exit(1)
 
-    image_list = make_list(image_dir)
-    pprint(image_list)
-    index_html_file = '%s/index.html' % image_dir
-    make_html_table(image_list, index_html_file, web_title)
+    #image_list = make_list(image_dir)
+    #pprint(image_list)
+    #index_html_file = '%s/index.html' % image_dir
+    make_html_table(image_dir, web_title)
 
     logging.info("\n *** index.html created in Image Directory ***")
     sys.exit(0)
