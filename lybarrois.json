@@ -1,0 +1,12 @@
+{
+    "client_name": "Lyndon Barrois",
+    "client_address": "1234 Virginia Rd, Los Angeles, CA 90035",
+    "client_phone": "310-987-1234",
+    "client_email": "lybarr@me.com",
+    "start_date": "2025-04-15",
+    "end_date": "2025-04-15",
+    "hours_worked": 50,
+    "material_cost": "$100",
+    "discount": 0,
+    "total_cost": "$2100"
+}

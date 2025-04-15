@@ -122,6 +122,8 @@ if __name__ == "__main__":
     parser.add_argument('jsonfile', action='store', nargs='?', default=os.getcwd(), help='json file name to be created or updated')
     args = parser.parse_args()
 
+    # need to add optional argument for discount
+
     #print("sys.argv", sys.argv)
     #print("args")
     pprint(args)
