@@ -13,8 +13,8 @@ import os
 #from datetime import date
 import logging
 
-from PySide2 import QtCore, QtGui, QtWidgets
-from PySide2 import QtUiTools
+from PySide6 import QtCore, QtGui, QtWidgets
+from PySide6 import QtUiTools
 
 import clientinvoice as cinv
 
@@ -25,7 +25,7 @@ import clientinvoice as cinv
 VERSION = "V01"
 
 logging.basicConfig(level=logging.INFO)
-logging.info( " %s Version %s" % (sys.argv[0], VERSION))
+logging.info(f" {sys.argv[0]} Version {VERSION}")
 
 DEFAULTDIR = "/Users/suzanneberger/Documents/teaching/terence"
 
@@ -327,4 +327,4 @@ if __name__ == '__main__':
     
     app = QtWidgets.QApplication(sys.argv)
     invoicewin = InvoiceWin()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
