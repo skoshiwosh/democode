@@ -62,7 +62,10 @@ def mkcube(grp_name, cube_name):
 #
 # mkbldgs ToDo: complete function
 #
-# create simple geometry and group under group named by grp_name argument
+# - create group node to contain various building models that get subsequently
+#  chosen at random in duplication functions: copy2grid and copy2vtx.
+# - buildings can either be created as simple geometry or provided in selection list. 
+# - building model options should be provided as keyword arguments.
 #
 ####################################################################
 def mkbldgs(grp_name):
