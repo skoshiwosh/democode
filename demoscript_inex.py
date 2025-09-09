@@ -54,7 +54,7 @@ if __name__ == "__main__":
     if len(sys.argv) < 3:
         #logging.error(" {} is missing arguments".format(sys.argv[0]))
         #sys.exit(1)
-        arg1,arg2 = input("Enter 2 coma-separated values: ") 
+        arg1,arg2 = input("Enter 2 coma-separated values: ").split(',')
     else:
         arg1 = sys.argv[1]
         arg2 = sys.argv[2]

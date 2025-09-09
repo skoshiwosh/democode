@@ -11,14 +11,14 @@
 import sys
 import logging
 
-
+    
 #########################################################
 # globals
 #########################################################
 
 VERSION = "V02"
-logging.basicConfig(level=logging.INFO)
-#logging.basicConfig(level=logging.DEBUG)
+#logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 logging.info("%s Version %s" % (__file__, VERSION))     # this is old-style string formating
 
 logging.debug("__name__ is this: %s" % __name__)
