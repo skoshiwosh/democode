@@ -13,7 +13,7 @@ VERSION = "V02"
 logging.basicConfig(level=logging.INFO)
 logging.info("%s Version %s" % (__file__, VERSION))
 
-print("__name__ is this: %s" % __name__)
+print(f"__name__ is this: {__name__}")
 #print("cmp_ints is type ", type(cmp_ints))     # will error because 'cmp_ints' not defined yet
 
 #########################################################
@@ -63,11 +63,11 @@ if __name__ == "__main__":
         i = int(arg1)
         j = int(arg2)
     except:
-        logging.error(" Arguments {} and {} are not integers".format(arg1, arg2))
+        logging.error(f" Arguments {arg1} and/or {arg2} are not integers")
         sys.exit(1)
         
     range_list = cmp_ints(i, j)
-    print("length of range_list is: {}\nhere is the list: {}".format(len(range_list), range_list))
+    print(f"length of range_list is: {len(range_list)}\nhere is the list: {range_list}")
     for each in range_list:
         print(each)
 

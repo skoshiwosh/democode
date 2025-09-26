@@ -19,9 +19,10 @@ import logging
 VERSION = "V02"
 #logging.basicConfig(level=logging.INFO)
 logging.basicConfig(level=logging.DEBUG)
-logging.info("%s Version %s" % (__file__, VERSION))     # this is old-style string formating
+#logging.info("%s Version %s" % (__file__, VERSION))     # this is old-style string formating
+logging.info(f"{__file__} Version {VERSION}")
+logging.debug(f"__name__ is this: {__name__}")
 
-logging.debug("__name__ is this: %s" % __name__)
 #print("cmp_ints is type ", type(cmp_ints))     # will error because 'cmp_ints' not defined yet
 
 #########################################################
@@ -70,7 +71,7 @@ if __name__ == "__main__":
 
     print("sys.argv list:", sys.argv)
     if len(sys.argv) < 3:
-        logging.error("{} is missing arguments".format(sys.argv[0]))
+        logging.error(f"{sys.argv[0]} is missing arguments")
         sys.exit(1)
 
     #print("type of second arg",type(sys.argv[1]))
@@ -78,7 +79,7 @@ if __name__ == "__main__":
         i = int(sys.argv[1])
         j = int(sys.argv[2])
     except:
-        logging.error("{} arguments '{}' and/or '{}' are not integers".format(sys.argv[0], sys.argv[1], sys.argv[2]))
+        logging.error(f"{sys.argv[0]} arguments '{sys.argv[1]}' and/or '{sys.argv[2]}' are not integers")
         sys.exit(1)
         
     range_list = cmp_ints(i, j)
