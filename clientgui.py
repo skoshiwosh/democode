@@ -9,8 +9,7 @@
 """
 
 import sys
-import os
-#from datetime import date
+#import os
 import logging
 
 from PySide6 import QtCore, QtGui, QtWidgets
@@ -28,6 +27,8 @@ logging.basicConfig(level=logging.INFO)
 logging.info(f" {sys.argv[0]} Version {VERSION}")
 
 DEFAULTDIR = "/Users/suzanneberger/Documents/teaching/terence"
+
+print(cinv.__file__)
 
 #########################################################
 # InvoiceWin
