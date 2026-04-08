@@ -1,0 +1,180 @@
+#!/usr/bin/env python
+"""
+    Class definition for carpenter client invoice data
+    
+    Version: 1.0
+    Date: July 6, 2020
+    Author: Suzanne Berger
+    Contact: zanefx7@gmail.com
+
+    Updated: April 7, 2026
+    Converted to using Path instead of os for file operations
+"""
+
+import sys
+from pathlib import Path
+from datetime import date
+import argparse
+import json
+from pprint import pprint
+
+class ClientInvoice():
+    """ class to define client invoice data """
+    labor_cost = 40
+    def __init__(self):
+        self.client_name = ""
+        self.client_address = ""
+        self.client_phone = ""
+        self.client_email = ""
+        self.hours_worked = 1
+        self.material_cost = 0
+        self.discount = 0
+        self.total_cost = 0
+        self.start_date = None
+        self.end_date = None
+
+    def set_name(self, client_name):
+        self.client_name = client_name
+    
+    def set_address(self, client_address):
+        self.client_address = client_address
+    
+    def set_phone(self, client_phone):
+        self.client_phone = client_phone
+    
+    def set_email(self, client_email):
+        self.client_email = client_email
+
+    def set_start(self, start_date):
+        self.start_date = start_date
+
+    def set_end(self, end_date):
+        self.end_date = end_date
+
+    def set_totalcost(self):
+        self.total_cost = self.hours_worked * ClientInvoice.labor_cost + self.material_cost
+        if self.discount > 0:
+            self.total_cost -= ClientInvoice.labor_cost * self.discount
+        return self.total_cost
+
+    def newjson(self, client_name, client_address='', client_phone='', client_email='', jsonfile=None):
+        parts = client_name.lower().split()
+        basename = "{}.json".format(parts[0][0:2] + parts[-1])
+        if not jsonfile:
+            #jsonfile = os.path.join(os.getcwd(), basename)
+            jsonfile = Path.cwd() / basename
+        elif Path(jsonfile).is_dir():
+            #jsonfile = os.path.join(jsonfile, basename)
+            jsonfile = Path(jsonfile) / basename
+        else:
+            return None
+        
+        self.set_name(client_name)
+        self.set_start(date.today().isoformat())
+        self.set_end(date.today().isoformat())
+        self.set_address(client_address)
+        self.set_phone(client_phone)
+        self.set_email(client_email)
+        
+        client_dict = self.getdict()
+        self.client_file = open(jsonfile, 'w')
+        json.dump(client_dict, self.client_file, indent=4)
+        print(f"New client: {self.client_name}")
+        print(f"Created new client invoice json file: {jsonfile}")
+        return jsonfile
+
+    def loadjson(self, jsonfile):
+        if not Path(jsonfile).is_file():
+            return None
+        self.client_file = open(jsonfile, 'r+')
+        client_dict = json.load(self.client_file)
+        print("Current client json data")
+        pprint(client_dict)
+        return client_dict
+            
+    def updatejson(self):
+        client_dict = self.getdict()
+        self.client_file.seek(0)
+        json.dump(client_dict, self.client_file, indent=4)
+        self.client_file.truncate()
+        return client_dict
+
+    def getdict(self):
+        client_dict = {
+            "client_name": self.client_name,
+            "client_address": self.client_address,
+            "client_phone": self.client_phone,
+            "client_email": self.client_email,
+            "start_date": self.start_date,
+            "end_date": self.end_date,
+            "hours_worked": self.hours_worked,
+            "material_cost": "${}".format(self.material_cost),
+            "discount": self.discount,
+            "total_cost": "${}".format(self.total_cost)
+        }
+        return client_dict
+
+# main
+if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser(description = 'Create or update json file containing client invoice data')
+    parser.add_argument('-n', '--name', action='store', dest='client_name', default='', help='full client name')
+    parser.add_argument('-a', '--address', action='store', dest='client_address', default='', help='full client address')
+    parser.add_argument('-p', '--phone', action='store', dest='client_phone', default='', help='client phone number')
+    parser.add_argument('-e', '--email', action='store', dest='client_email', default='', help='client email address')
+    parser.add_argument('--hours', type=int, action='store', dest='hours_worked', default=0, help='hours worked')
+    parser.add_argument('-m', '--matcost', type=int, action='store', dest='material_cost', default=0, help='material cost')
+    parser.add_argument('jsonfile', action='store', nargs='?', default=Path.cwd(), help='json file name to be created or updated')
+    args = parser.parse_args()
+
+    # need to add optional argument for discount
+
+    #print("sys.argv", sys.argv)
+    #print("args")
+    #pprint(args)
+    
+    this_client = ClientInvoice()
+    
+    if args.client_name:
+        this_jsonfile = this_client.newjson(args.client_name, args.client_address,
+                                            args.client_phone, args.client_email, args.jsonfile)
+        if this_jsonfile is None:
+            print("Error: Invalid jsonfile argument")
+            sys.exit(1)
+
+    else:
+        client_dict = this_client.loadjson(args.jsonfile)
+        if client_dict is None:
+            print("Error: Invalid jsonfile argument")
+            parser.print_help()
+            sys.exit(1)
+        
+        this_client.set_name(client_dict['client_name'])
+        this_client.set_start(client_dict['start_date'])
+
+        if args.client_address:
+            this_client.set_address(args.client_address)
+        else:
+            this_client.set_address(client_dict['client_address'])
+
+        if args.client_phone:
+            this_client.set_phone(args.client_phone)
+        else:
+            this_client.set_phone(client_dict['client_phone'])
+
+        if args.client_email:
+            this_client.set_email(args.client_email)
+        else:
+            this_client.set_email(client_dict['client_email'])
+
+        this_client.hours_worked = args.hours_worked
+        this_client.material_cost = args.material_cost
+        this_client.set_totalcost()
+        this_client.set_end(date.today().isoformat())
+
+        client_dict = this_client.updatejson()
+        print("Updating client json data")
+        pprint(client_dict)
+        print(f"Updated existing client invoice json file: {args.jsonfile}")
+
+    sys.exit()
