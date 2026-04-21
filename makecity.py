@@ -20,9 +20,9 @@ import maya.cmds as cmds
 # globals
 #########################################################
 
-VERSION = "V02"
+VERSION = "V03"
 logging.basicConfig(level=logging.INFO)
-logging.info("makecity.py Version %s" % VERSION)
+logging.info(f"makecity.py Version {VERSION}")
 
 #ToDo: add random.seed(any number) so that behavior based on any random number
 #generation in functions below is always the same when re-running the script
@@ -44,7 +44,7 @@ def mkcube(grp_name, cube_name):
     """
     new_cube = cmds.polyCube(ax=[0, 1, 0], cuv=4, ch=True, name=cube_name)
     cmds.group(new_cube, name=grp_name)
-    nodeattr = "%s.translateY" % new_cube[0]
+    nodeattr = f"{new_cube[0]}.translateY"
     cmds.setAttr(nodeattr, 0.5)
     
     # another way to change pivot on geo
@@ -55,6 +55,7 @@ def mkcube(grp_name, cube_name):
     # ToDo: fix bug so that pivot xform applies to cube and not group node
     cmds.xform(worldSpace=True, pivots=[0,0,0])
     cmds.makeIdentity(apply=True, t=1, r=1, s=1, n=0, pn=1 )
+    logging.info("Created new geo group for buildings")
     return new_cube[0]
 
 
@@ -123,7 +124,7 @@ def copy2grid(bldg_grp, numrows=4, numcols=4, stepx=3, stepz=3, hide=True):
     
     # turn off original geo's visibility if hide is True
     if hide:
-        cmds.setAttr("%s.visibility" % bldg_grp, 0)
+        cmds.setAttr(f"{bldg_grp}.visibility", 0)
     return city_grp
 
 

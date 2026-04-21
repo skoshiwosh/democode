@@ -13,7 +13,7 @@ import sys
 import logging
 from pprint import pprint
 
-from PySide2 import QtCore, QtGui, QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
 from maya import OpenMayaUI as omui
 from shiboken2 import wrapInstance
 import maya.cmds as cmds
