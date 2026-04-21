@@ -15,7 +15,7 @@ from pprint import pprint
 
 from PySide6 import QtCore, QtGui, QtWidgets
 from maya import OpenMayaUI as omui
-from shiboken2 import wrapInstance
+from shiboken6 import wrapInstance
 import maya.cmds as cmds
 import maya.OpenMaya as om
 
